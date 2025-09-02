@@ -35,7 +35,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/auth/signup", { name, email, password });
+      await axios.post("/api/auth/signup", { name, email, password });
       setError("");
       setSignupState("P2");
       alert("Signup successful!");
@@ -233,3 +233,4 @@ const Signup = () => {
 };
 
 export default Signup;
+

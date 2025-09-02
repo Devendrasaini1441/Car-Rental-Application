@@ -69,8 +69,9 @@ jobs:
         with:
           app-name: 'car-rental-app'
           slot-name: 'Production'
-          package: .
+          package: ./backend
 
           
+
 
 

@@ -2,6 +2,7 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
@@ -23,5 +24,14 @@ app.use("/api/bookings", require("./routes/bookingRoutes"));
 
 app.use("/api/payments", require("./routes/paymentRoutes"));
 
+// Serve React Frontend
+// ---------------------
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+

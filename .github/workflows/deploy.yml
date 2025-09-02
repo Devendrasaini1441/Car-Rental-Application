@@ -22,14 +22,33 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: npm install --prefix backend
+      # Install backend dependencies
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
 
+      # Install frontend dependencies
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      # Build frontend
       - name: Build frontend
-        run: npm run build --prefix frontend
+        run: |
+          cd frontend
+          npm run build
 
+      # Copy frontend build into backend/public
+      - name: Copy frontend build to backend
+        run: |
+          rm -rf backend/public
+          cp -r frontend/build backend/public
+
+      # Deploy only backend folder (with frontend build inside public)
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: car-rental-app
+          app-name: car-rental-app   # change this to your Azure WebApp name
           package: ./backend

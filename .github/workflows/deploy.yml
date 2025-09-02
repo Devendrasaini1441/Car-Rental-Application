@@ -21,22 +21,22 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       # Install frontend dependencies and build
       - name: Install frontend dependencies
         run: |
           cd frontend
           npm install
+          chmod +x node_modules/.bin/react-scripts
           npm run build
 
-      # Install backend dependencies (ignore postinstall so it won’t try cd frontend)
+      # Install backend dependencies
       - name: Install backend dependencies
         run: |
           cd backend
           npm install --ignore-scripts
 
-      # Deploy only backend (which contains API + will serve frontend build if needed)
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v3
         with:

@@ -8,8 +8,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Login to Azure
@@ -22,33 +23,22 @@ jobs:
         with:
           node-version: '18'
 
-      # Install backend dependencies
-      - name: Install backend dependencies
-        run: |
-          cd backend
-          npm install
-
-      # Install frontend dependencies
+      # Install frontend dependencies and build
       - name: Install frontend dependencies
         run: |
           cd frontend
           npm install
-
-      # Build frontend
-      - name: Build frontend
-        run: |
-          cd frontend
           npm run build
 
-      # Copy frontend build into backend/public
-      - name: Copy frontend build to backend
+      # Install backend dependencies (ignore postinstall so it won’t try cd frontend)
+      - name: Install backend dependencies
         run: |
-          rm -rf backend/public
-          cp -r frontend/build backend/public
+          cd backend
+          npm install --ignore-scripts
 
-      # Deploy only backend folder (with frontend build inside public)
+      # Deploy only backend (which contains API + will serve frontend build if needed)
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: car-rental-app   # change this to your Azure WebApp name
+          app-name: car-rental-app
           package: ./backend

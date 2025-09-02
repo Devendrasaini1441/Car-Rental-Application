@@ -21,7 +21,7 @@ export const CarContextProvider = ({ children }) => {
     setLoading(true);
     setCarState("P2");
     try {
-      const response = await axios.get("http://localhost:5000/api/cars/all");
+      const response = await axios.get("/api/cars/all");
       setCars(response.data);
       setCarState("P3");
     } catch (err) {
@@ -35,7 +35,7 @@ export const CarContextProvider = ({ children }) => {
   const addCar = async (carData) => {
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/api/cars/add", carData);
+      const response = await axios.post("/api/cars/add", carData);
       setCars(prev => [...prev, response.data]);
       setCarState("P3");
       return true;
@@ -51,7 +51,7 @@ export const CarContextProvider = ({ children }) => {
   const deleteCar = async (carId) => {
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:5000/api/cars/${carId}`);
+      await axios.delete(`/api/cars/${carId}`);
       setCars(prev => prev.filter(car => car._id !== carId));
       setCarState("P3");
     } catch (err) {
@@ -67,12 +67,12 @@ export const CarContextProvider = ({ children }) => {
     try {
       if (!userId) throw new Error("User not authenticated");
 
-      const car = await axios.get(`http://localhost:5000/api/cars/${carId}`);
+      const car = await axios.get(`/api/cars/${carId}`);
       if (!car.data || !car.data.isAvailable) {
         throw new Error(car.data ? "Car not available" : "Car not found");
       }
 
-      const bookingResponse = await axios.post("http://localhost:5000/api/bookings/book", {
+      const bookingResponse = await axios.post("/api/bookings/book", {
         user: userId,
         car: carId,
       });
@@ -101,7 +101,7 @@ export const CarContextProvider = ({ children }) => {
     setPaymentState("PY2");
     try {
       const paymentResponse = await axios.post(
-        "http://localhost:5000/api/payments/create-payment-intent",
+        "/api/payments/create-payment-intent",
         { bookingId, amount }
       );
       return paymentResponse.data.clientSecret;
@@ -114,7 +114,7 @@ export const CarContextProvider = ({ children }) => {
 
   const confirmPayment = async (paymentIntentId) => {
     try {
-      await axios.post("http://localhost:5000/api/payments/confirm-payment", {
+      await axios.post("/api/payments/confirm-payment", {
         paymentIntentId
       });
       setPaymentState("PY3");
@@ -130,7 +130,7 @@ export const CarContextProvider = ({ children }) => {
   const cancelBooking = async (bookingId) => {
     setLoading(true);
     try {
-      const response = await axios.delete(`http://localhost:5000/api/bookings/${bookingId}`);
+      const response = await axios.delete(`/api/bookings/${bookingId}`);
 
       setCars(prev =>
         prev.map(car =>
@@ -151,7 +151,7 @@ export const CarContextProvider = ({ children }) => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5000/api/bookings");
+      const response = await axios.get("/api/bookings");
       setBookings(response.data);
     } catch (err) {
       setError("Failed to fetch bookings");
@@ -189,3 +189,4 @@ export const CarContextProvider = ({ children }) => {
     </CarContext.Provider>
   );
 };
+

@@ -28,6 +28,7 @@ jobs:
         run: |
           cd frontend
           npm install
+          chmod +x ./node_modules/.bin/react-scripts
           npm run build
 
       # Install backend dependencies
@@ -71,3 +72,4 @@ jobs:
           package: .
 
           
+

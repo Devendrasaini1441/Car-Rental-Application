@@ -28,8 +28,9 @@ jobs:
         run: |
           cd frontend
           npm install
-          chmod +x node_modules/.bin/react-scripts
           CI=false npm run build   # ✅ ignore ESLint warnings in CI
+          cd ..
+          cp -r frontend/build backend/   # ✅ CHANGED: copy React build to backend
 
       # Install backend dependencies
       - name: Install backend dependencies
@@ -41,4 +42,4 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: car-rental-app
-          package: ./backend
+          package: ./backend   # ✅ deploy only backend (with frontend build included)

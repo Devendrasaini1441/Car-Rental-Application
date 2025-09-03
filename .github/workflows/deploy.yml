@@ -30,7 +30,8 @@ jobs:
           npm install
           CI=false npm run build   # ✅ ignore ESLint warnings in CI
           cd ..
-          cp -r frontend/build backend/   # ✅ CHANGED: copy React build to backend
+          rm -rf backend/frontend   # cleanup old build
+          mv frontend/build backend/frontend   # move build inside backend
 
       # Install backend dependencies
       - name: Install backend dependencies

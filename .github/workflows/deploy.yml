@@ -28,6 +28,7 @@ jobs:
         run: |
           cd frontend
           npm install
+          chmod +x node_modules/.bin/react-scripts
           CI=false npm run build   # ✅ ignore ESLint warnings in CI
           cd ..
           rm -rf backend/frontend   # cleanup old build
